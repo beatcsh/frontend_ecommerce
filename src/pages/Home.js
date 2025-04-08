@@ -63,7 +63,7 @@ const HomePage = () => {
                         alt="Smart Watch"
                         className="overlay-image"
                     />
-                    <a href="#" className="btn">
+                    <a href="/products" className="btn">
                         Buy Now →
                     </a>
                 </div>
@@ -91,7 +91,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <section className="hero" id="hero">
+            {/* <section className="hero" id="hero">
                 <div className="row">
                     <div className="col-2" data-aos="fade-right">
                         <h1>Best Phones Ever!</h1>
@@ -109,7 +109,7 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             <section className="testimonial-modern">
                 <div className="testimonial-wrapper">
