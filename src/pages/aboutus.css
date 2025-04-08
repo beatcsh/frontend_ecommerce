@@ -1,0 +1,130 @@
+/* General styles */
+.about-us-section {
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.description {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 50px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mission-vision-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.mission-vision-container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 48%;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.card-description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Estilo de imagen centrada */
+.image {
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .subtitle {
+        font-size: 2rem;
+    }
+
+    .description {
+        font-size: 1rem;
+        max-width: 90%;
+    }
+
+    .mission-vision-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mission-vision-container {
+        justify-content: center;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .image {
+        width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .subtitle {
+        font-size: 1.6rem;
+    }
+
+    .description {
+        font-size: 0.9rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .card-description {
+        font-size: 0.9rem;
+    }
+
+    .image {
+        width: 60%;
+    }
+}

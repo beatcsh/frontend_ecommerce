@@ -1,78 +1,67 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 const HomePage = () => {
+    const carouselRef = useRef(null);
+
+    useEffect(() => {
+        const images = carouselRef.current?.querySelectorAll('.carousel-image');
+        if (!images || images.length === 0) return;
+      
+        let currentIndex = 0;
+      
+        const interval = setInterval(() => {
+          images[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex + 1) % images.length;
+          images[currentIndex].classList.add('active');
+        }, 3000);
+      
+        return () => clearInterval(interval);
+      }, []);
+      
+
     return (
         <>
-            <div className="header">
-                <div className="container">
-                    <div className="navbar">
-                        <a href="/"><img src="../images/LogoY.jpg" width="125px" alt="Logo" /></a>
-                    </div>
-                    <nav>
-                        <ul id="MenuItems">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/products">Products</a></li>
-                            <li><a href="/about-us">About us</a></li>
-                            <li><a href="/account">Account</a></li>
-                        </ul>
-                    </nav>
+            <Header />
+            <section className="offer-video-background">
+                <video autoPlay muted loop playsInline className="background-video">
+                    <source src="/images/large_2x.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
 
-                    <a href="/cart"><img src="../images/carrito-de-compras.svg" width="30px" height="30px" alt="Cart" /></a>
+                <div className="overlay-content">
                     <img
-                        src="../images/carrito-de-compras.svg"
-                        className="menu-icon"
-                        onClick={() => console.log('Toggle menu')}
-                        alt="Menu icon"
+                        src="/images/hero_apple_intelligence_headline__fwxxapju9a6i_large_2x.png"
+                        alt="Smart Watch"
+                        className="overlay-image"
                     />
+                    <a href="#" className="btn">
+                        Buy Now →
+                    </a>
                 </div>
+            </section>
 
-                <div className="row">
-                    <div className="col-2">
-                        <h1>BEST PHONES EVER!!</h1>
-                        <p>
-                            Welcome to our website, where you'll find the best cell phones on the market,
-                            featuring cutting-edge technology, innovative design, and options for all tastes and needs!
-                            Explore our wide selection and find the perfect device for you.
-                        </p>
-                        <a href="#" className="btn">Explore now &#8594;</a>
-                    </div>
-                    <div className="col-2">
-                        <img src="/images/findx1.webp" alt="Phone" />
-                    </div>
-                </div>
-            </div>
-
-            {/* Categorías */}
             <div className="categories">
                 <div className="small-container">
                     <div className="row">
-                        <div className="col-3">
-                            <img src="../images/pd1.png" alt="Category 1" />
-                        </div>
-                        <div className="col-3">
-                            <img src="../images/pd2.jpg" alt="Category 2" />
-                        </div>
-                        <div className="col-3">
-                            <img src="../images/p3.jpg" alt="Category 3" />
-                        </div>
+                        <div className="col-3"><img src="/images/pd1.png" /></div>
+                        <div className="col-3"><img src="/images/pd2.jpg" /></div>
+                        <div className="col-3"><img src="/images/p3.jpg" /></div>
                     </div>
                 </div>
             </div>
 
-            {/* Productos destacados */}
             <div className="small-container">
                 <h2 className="title">Featured Products</h2>
                 <div className="row">
-                    {[1, 2, 3, 4].map((_, index) => (
-                        <div className="col-4" key={index}>
-                            <a href="/details"><img src="../images/pdm2.png" alt="Product" /></a>
-                            <a href="/details"><h4>Purple</h4></a>
+                    {/* Puedes mapear productos aquí si los tienes en un array */}
+                    {[1, 2, 3, 4].map((_, idx) => (
+                        <div key={idx} className="col-4">
+                            <a href="/Details.html"><img src="/images/pdm2.png" /></a>
+                            <a href="/Details.html"><h4>Purple</h4></a>
                             <div className="rating">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
+                                {[1, 2, 3, 4].map(i => <i key={i} className="fa fa-star"></i>)}
                                 <i className="far fa-star"></i>
                             </div>
                             <p>$2,199</p>
@@ -82,14 +71,12 @@ const HomePage = () => {
 
                 <h2 className="title">Latest Products</h2>
                 <div className="row">
-                    {[...Array(8)].map((_, index) => (
-                        <div className="col-4" key={index}>
-                            <img src="../images/p1.jpg" alt="Product" />
+                    {[...Array(8)].map((_, idx) => (
+                        <div key={idx} className="col-4">
+                            <img src="/images/p1.jpg" />
                             <h4>Grey color</h4>
                             <div className="rating">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
+                                {[1, 2, 3, 4].map(i => <i key={i} className="fa fa-star"></i>)}
                                 <i className="far fa-star"></i>
                             </div>
                             <p>$10,000</p>
@@ -98,72 +85,83 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {/* Oferta */}
-            <div className="offer">
-                <div className="small-container">
-                    <div className="row">
-                        <div className="col-2">
-                            <img src="../images/chinita.jpg" className="offer-img" alt="Smart Watch" />
-                        </div>
-                        <div className="col-2">
-                            <p>Exclusively Available on 11vo Solutions</p>
-                            <h1>Smart Watch</h1>
-                            <small>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nulla ea ad totam eveniet
-                                dignissimos? Quam vero qui facilis esse ea. Eligendi deserunt in ullam, debitis assumenda
-                                quaerat maxime quidem.
-                            </small>
-                            <a href="#" className="btn">Buy Now &#8594;</a>
+            <section className="hero" id="hero">
+                <div className="row">
+                    <div className="col-2" data-aos="fade-right">
+                        <h1>Best Phones Ever!</h1>
+                        <p>
+                            Discover the most advanced smartphones on the market—featuring cutting-edge
+                            technology, stunning design, and unmatched performance. Find your perfect device today.
+                        </p>
+                        <a href="#" className="btn">Explore Now <span>&#8594;</span></a>
+                    </div>
+                    <div className="col-2" data-aos="fade-left">
+                        <div className="carousel" ref={carouselRef}>
+                            <img src="/images/10.avif" alt="Smartphone 2" className="carousel-image" />
+                            <img src="/images/11.jpg" alt="Smartphone 3" className="carousel-image" />
+                            <img src="/images/12.avif" alt="Smartphone 1" className="carousel-image active" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Testimonios */}
-            <div className="testimonial">
-                <div className="small-container">
-                    <div className="row">
+            <section className="testimonial-modern">
+                <div className="testimonial-wrapper">
+                    <h2 className="testimonial-title">What People Are Saying</h2>
+                    <div className="testimonial-cards">
                         {[
                             {
-                                name: "Edwin Alejandro",
-                                text: "The phones from this store are amazing. The speed, the camera, and the battery last much longer than I expected. Definitely a great purchase!",
-                                img: "images/ea.webp"
+                                text: 'The phones from this store are amazing...',
+                                name: 'Edwin Alejandro',
+                                role: 'Verified Buyer',
+                                image: '/images/ea.webp'
                             },
                             {
-                                name: "Jorge Wong",
-                                text: "I bought my phone here a few months ago and it still works like the first day. The quality is unbeatable, I couldn't be happier with my purchase!",
-                                img: "images/jw.jpeg"
+                                text: 'I bought my phone here months ago...',
+                                name: 'Jorge Wong',
+                                role: 'Longtime Customer',
+                                image: '/images/jw.jpeg'
                             },
                             {
-                                name: "Jesús Sanchez",
-                                text: "Incredible quality and performance. The design is sleek and the materials are premium. Definitely the best choice for anyone looking for a durable and powerful phone.",
-                                img: "images/jss.webp"
+                                text: "Sleek design, powerful performance...",
+                                name: 'Jesús Sanchez',
+                                role: 'Tech Enthusiast',
+                                image: '/images/jss.webp'
                             }
-                        ].map((testimonial, index) => (
-                            <div className="col-3" key={index}>
-                                <i className="fa fa-quote-left"></i>
-                                <p>{testimonial.text}</p>
-                                <div className="rating">
+                        ].map((review, idx) => (
+                            <div key={idx} className="testimonial-card">
+                                <p>{review.text}</p>
+                                <div className="testimonial-stars">
                                     <i className="fa fa-star"></i>
                                     <i className="fa fa-star"></i>
                                     <i className="fa fa-star"></i>
-                                    <i className="far fa-star"></i>
+                                    <i className="fa fa-star-half-alt"></i>
                                 </div>
-                                <img src={testimonial.img} alt={testimonial.name} />
-                                <h3>{testimonial.name}</h3>
+                                <div className="testimonial-user">
+                                    <img src={review.image} alt={review.name} />
+                                    <div>
+                                        <h4>{review.name}</h4>
+                                        <small>{review.role}</small>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Marcas */}
             <div className="brands">
                 <div className="small-container">
                     <div className="row">
-                        {[...Array(5)].map((_, i) => (
-                            <div className="col-5" key={i}>
-                                <img src="../images/p1.jpg" alt={`Brand ${i + 1}`} />
+                        {[
+                            'descargar__1_-removebg-preview.png',
+                            'motorola_logo-removebg-preview.png',
+                            'samsung_logo-removebg-preview.png',
+                            'oppo_logo-removebg-preview.png',
+                            'huawei_logo-removebg-preview.png'
+                        ].map((logo, idx) => (
+                            <div key={idx} className="col-5">
+                                <img src={`/images/${logo}`} alt={`Brand ${idx + 1}`} />
                             </div>
                         ))}
                     </div>
