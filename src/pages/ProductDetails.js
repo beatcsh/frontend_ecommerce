@@ -1,109 +1,93 @@
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import { useParams, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { products } from "../data/products";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 const DetailsPage = () => {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const location = useLocation();
+    const [quantity, setQuantity] = useState(1);
+
+    const product = location.state || products.find(product => product.id === id);
+
+    if (!product) return <h2>No hay producto seleccionado</h2>;
+
+    const handleAddToCart = () => {
+        // Verifica si el usuario está logueado
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            // Si no está logueado, redirige a la página de login
+            alert("Please log in to add items to the cart.");
+            navigate("/login"); // Redirige a la página de login
+            return; // No continúa con la acción
+        }
+
+        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingProduct = existingCart.find(item => item.id === product.id);
+
+        if (existingProduct) {
+            existingProduct.quantity += parseInt(quantity);
+        } else {
+            existingCart.push({ ...product, quantity: parseInt(quantity) });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(existingCart));
+        alert(`${product.name} added to cart!`);
+    };
+
+    const related_prods = products.slice(5, 8).map((product) => {
+        return (
+            <div className="col-4" key={product.id}>
+                <a className="details-btn" onClick={() => navigate(`/details/${product.id}`)}>
+                    <img src={product.image} alt={product.name} />
+                    <h4>{product.name}</h4>
+                    <p>${product.price} USD</p>
+                </a>
+            </div>
+        );
+    });
+
     return (
         <>
             <Header />
-            <div class="small-container single-product">
-                <div class="row">
-                    <div class="col-2">
-                        <img src="../images/uno.jpg" width="100%" id="ProductImg" />
-
-                            <div class="small-img-row">
-                                <div class="small-img-col">
-                                    <img src="../images/p1.jpg" width="100%" class="small-img" />
-                                </div>
-                                <div class="small-img-col">
-                                    <img src="../images/p2.jpg" width="100%" class="small-img" />
-                                </div>
-                                <div class="small-img-col">
-                                    <img src="../images/p3.jpg" width="100%" class="small-img" />
-                                </div>
-                                <div class="small-img-col">
-                                    <img src="../images/uno.jpg" width="100%" class="small-img" />
-                                </div>
-                            </div>
+            <div className="small-container single-product">
+                <div className="row">
+                    <div className="col-2">
+                        <img src={product.image} width="70%" id="ProductImg" alt={product.name} />
                     </div>
-                    <div class="col-2">
-                        <p>Home / Cellphone</p>
-                        <h1>Black style by Motorola</h1>
-                        <h4>$10,000</h4>
-                        <select>
-                            <option>Select color</option>
-                            <option>Black</option>
-                            <option>White</option>
-                            <option>Grey</option>
-                        </select>
-                        <input type="number" value="1" />
-                        <a href="" class="btn">Add to cart</a>
-                        <h3>Product Details <i class="fa fa-indent"></i></h3>
+                    <div className="col-2">
+                        <h1>{product.name}</h1>
+                        <h4>${product.price} USD</h4>
+                        <input
+                            type="number"
+                            value={quantity}
+                            min="1"
+                            onChange={(e) => setQuantity(e.target.value)}
+                        />
                         <br />
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+                        <h3>Product Details <i className="fa fa-indent"></i></h3>
+                        <br />
+                        <p>{product.description}</p>
+                        <button onClick={handleAddToCart}>Add to cart</button>
                     </div>
                 </div>
             </div>
-            <div class="small-container">
-                <div class="row row-2">
+            <div className="small-container">
+                <div className="row row-2">
                     <h2>Related Products</h2>
-                    <p>View More</p>
                 </div>
             </div>
 
-            <div class="small-container">
-                <div class="row">
-                    <div class="col-4">
-                        <img src="../images/p1.jpg" />
-                        <h4>Grey color</h4>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <p>$10,000</p>
-                    </div>
-                    <div class="col-4">
-                        <img src="../images/p1.jpg" />
-                        <h4>Grey color</h4>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <p>$10,000</p>
-                    </div>
-                    <div class="col-4">
-                        <img src="../images/p1.jpg" />
-                        <h4>Grey color</h4>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <p>$10,000</p>
-                    </div>
-                    <div class="col-4">
-                        <img src="../images/p1.jpg" />
-                        <h4>Grey color</h4>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <p>$10,000</p>
-                    </div>
+            <div className="small-container">
+                <div className="row">
+                    {related_prods}
                 </div>
             </div>
             <Footer />
         </>
-    )
-}
+    );
+};
 
 export default DetailsPage;

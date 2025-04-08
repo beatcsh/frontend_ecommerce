@@ -248,7 +248,7 @@ a {
 }
 
 a:hover {
-    background-color: #2371bb;
+    /* background-color: #2371bb; */
     color: #1D1D1F;
     padding: 8px 30px;
     margin: 30px 0;
@@ -854,6 +854,10 @@ hr {
 .page-btn span:hover {
     background: #ff523b;
     color: #fff;
+}
+
+.details-btn:hover {
+    cursor: pointer;
 }
 
 /*Single product details*/

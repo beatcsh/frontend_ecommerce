@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const CartPage = () => {
-  const [quantities, setQuantities] = useState([1, 1, 1]); // estado para las cantidades de los productos
-  const prices = [25.00, 25.00, 25.00]; // precios de los productos (pueden ser dinámicos en un proyecto real)
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(storedCart);
+  }, []);
 
   const handleQuantityChange = (index, value) => {
-    const newQuantities = [...quantities];
-    newQuantities[index] = value;
-    setQuantities(newQuantities);
+    const newItems = [...cartItems];
+    newItems[index].quantity = parseInt(value);
+    setCartItems(newItems);
+    localStorage.setItem("cart", JSON.stringify(newItems));
   };
 
-  const calculateSubtotal = (index) => {
-    return quantities[index] * prices[index];
+  const handleRemove = (index) => {
+    const newItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(newItems);
+    localStorage.setItem("cart", JSON.stringify(newItems));
+  };
+
+  const calculateSubtotal = (item) => {
+    return item.price * item.quantity;
   };
 
   const calculateTotal = () => {
-    return quantities.reduce((total, quantity, index) => total + calculateSubtotal(index), 0);
+    return cartItems.reduce((total, item) => total + calculateSubtotal(item), 0);
   };
 
   return (
@@ -33,48 +44,65 @@ const CartPage = () => {
             </tr>
           </thead>
           <tbody>
-            {quantities.map((quantity, index) => (
-              <tr key={index}>
-                <td>
-                  <div className="cart-info">
-                    <img src="images/p1.jpg" alt="Grey Cellphone" />
-                    <div>
-                      <p>Grey Cellphone</p>
-                      <small>Price: ${prices[index]}</small><br />
-                      <a href="#">Remove</a>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <input 
-                    type="number" 
-                    value={quantity} 
-                    min="1" 
-                    onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-                  />
-                </td>
-                <td>${calculateSubtotal(index).toFixed(2)}</td>
+            {cartItems.length === 0 ? (
+              <tr>
+                <td colSpan="3" style={{ textAlign: "center" }}>Your cart is empty 🛒</td>
               </tr>
-            ))}
+            ) : (
+              cartItems.map((item, index) => (
+                <tr key={index}>
+                  <td>
+                    <div className="cart-info">
+                      <img src={item.image} alt={item.name} />
+                      <div>
+                        <p>{item.name}</p>
+                        <small>Price: ${item.price}</small><br />
+                        <button onClick={() => handleRemove(index)} style={{ color: "red", border: "none", background: "none", cursor: "pointer" }}>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      min="1"
+                      onChange={(e) => handleQuantityChange(index, e.target.value)}
+                    />
+                  </td>
+                  <td>${calculateSubtotal(item).toFixed(2)}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
 
-        <div className="total-price">
-          <table>
-            <tr>
-              <td>Subtotal</td>
-              <td>${quantities.reduce((total, quantity, index) => total + calculateSubtotal(index), 0).toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Tax</td>
-              <td>${(calculateTotal() * 0.1).toFixed(2)}</td> {/* Impuesto estimado del 10% */}
-            </tr>
-            <tr>
-              <td><strong>Total</strong></td>
-              <td><strong>${calculateTotal().toFixed(2)}</strong></td>
-            </tr>
-          </table>
-        </div>
+        {cartItems.length > 0 && (
+          <div className="total-price">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Subtotal</td>
+                  <td>${calculateTotal().toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td>Tax</td>
+                  <td>${(calculateTotal() * 0.1).toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td><strong>Total</strong></td>
+                  <td><strong>${(calculateTotal() * 1.1).toFixed(2)}</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://paypal.me/btm11vo?country.x=MX&locale.x=es_XC"><button>Pagar</button></a>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
       <Footer />
     </>
