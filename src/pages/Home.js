@@ -1,25 +1,52 @@
 import React, { useEffect, useRef } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
+import { products } from '../data/products';
 
 const HomePage = () => {
+
+    const navigate = useNavigate();
     const carouselRef = useRef(null);
 
     useEffect(() => {
         const images = carouselRef.current?.querySelectorAll('.carousel-image');
         if (!images || images.length === 0) return;
-      
+
         let currentIndex = 0;
-      
+
         const interval = setInterval(() => {
-          images[currentIndex].classList.remove('active');
-          currentIndex = (currentIndex + 1) % images.length;
-          images[currentIndex].classList.add('active');
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
         }, 3000);
-      
+
         return () => clearInterval(interval);
-      }, []);
-      
+    }, []);
+
+    const featured_prods = products.slice(0, 4).map((product) => {
+        return (
+            <div className="col-4" key={product.id}>
+                <a className="details-btn" onClick={() => navigate(`/details/${product.id}`)}>
+                    <img src={product.image} alt={product.name} />
+                    <h4>{product.name}</h4>
+                    <p>${product.price} USD</p>
+                </a>
+            </div>
+        );
+    });
+
+    const new_prods = products.slice(5, 8).map((product) => {
+        return (
+            <div className="col-4" key={product.id}>
+                <a className="details-btn" onClick={() => navigate(`/details/${product.id}`)}>
+                    <img src={product.image} alt={product.name} />
+                    <h4>{product.name}</h4>
+                    <p>${product.price} USD</p>
+                </a>
+            </div>
+        );
+    });
 
     return (
         <>
@@ -55,33 +82,12 @@ const HomePage = () => {
             <div className="small-container">
                 <h2 className="title">Featured Products</h2>
                 <div className="row">
-                    {/* Puedes mapear productos aquí si los tienes en un array */}
-                    {[1, 2, 3, 4].map((_, idx) => (
-                        <div key={idx} className="col-4">
-                            <a href="/Details.html"><img src="/images/pdm2.png" /></a>
-                            <a href="/Details.html"><h4>Purple</h4></a>
-                            <div className="rating">
-                                {[1, 2, 3, 4].map(i => <i key={i} className="fa fa-star"></i>)}
-                                <i className="far fa-star"></i>
-                            </div>
-                            <p>$2,199</p>
-                        </div>
-                    ))}
+                    { featured_prods }
                 </div>
 
                 <h2 className="title">Latest Products</h2>
                 <div className="row">
-                    {[...Array(8)].map((_, idx) => (
-                        <div key={idx} className="col-4">
-                            <img src="/images/p1.jpg" />
-                            <h4>Grey color</h4>
-                            <div className="rating">
-                                {[1, 2, 3, 4].map(i => <i key={i} className="fa fa-star"></i>)}
-                                <i className="far fa-star"></i>
-                            </div>
-                            <p>$10,000</p>
-                        </div>
-                    ))}
+                    { new_prods }
                 </div>
             </div>
 
