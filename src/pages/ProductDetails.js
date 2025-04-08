@@ -20,7 +20,7 @@ const DetailsPage = () => {
         if (localStorage.getItem("isLoggedIn") !== "true") {
             // Si no está logueado, redirige a la página de login
             alert("Please log in to add items to the cart.");
-            navigate("/login"); // Redirige a la página de login
+            navigate("/account"); // Redirige a la página de login
             return; // No continúa con la acción
         }
 
